@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"cd backend && node server.js",
-    "cli":"cd backend && node cli.js",
-    "dev":"cd backend && nodemon server.js"
+    "start": "cd backend && node server.js",
+    "cli": "cd backend && node cli.js",
+    "dev": "cd backend && nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.3.1"
+  }
 }
