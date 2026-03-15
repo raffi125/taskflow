@@ -1,19 +1,21 @@
 {
   "name": "taskflow",
   "version": "1.0.0",
-  "description": "Full-stack web app: **HTML/CSS/JS** + **Express.js** + **Neon PostgreSQL**",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd backend && npm install",
     "start": "cd backend && node server.js",
-    "cli": "cd backend && node cli.js",
-    "dev": "cd backend && nodemon server.js"
+    "dev":   "cd backend && nodemon server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "dotenv": "^17.3.1"
+    "@neondatabase/serverless": "^0.9.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.18.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
