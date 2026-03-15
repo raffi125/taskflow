@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>TaskFlow — Kelola Tugas Kuliah</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       TOAST CONTAINER
+  ═══════════════════════════════════════ -->
+  <div id="toast-wrap"></div>
+
+  <!-- ═══════════════════════════════════════
+       PAGE: LOGIN  (active = halaman awal)
+  ═══════════════════════════════════════ -->
+  <section id="page-login" class="page active">
+    <div class="auth-shell">
+      <div class="auth-card">
+
+        <div class="logo">
+          <div class="logo-dot"></div>
+          <div class="logo-text">TaskFlow</div>
+        </div>
+        <p class="auth-tagline">Kelola tugas kuliah lebih teratur</p>
+
+        <!-- Tabs -->
+        <div class="auth-tabs">
+          <button class="auth-tab act" id="tab-login">Masuk</button>
+          <button class="auth-tab"     id="tab-register">Daftar</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="form-login">
+          <div class="msg msg-err" id="login-err"></div>
+          <form id="login-form" autocomplete="off">
+            <div class="field">
+              <label>Username</label>
+              <input type="text" id="login-username" placeholder="Masukkan username"/>
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <div class="pw-wrap">
+                <input type="password" id="login-password" placeholder="Masukkan password"/>
+                <button type="button" class="pw-toggle" id="toggle-login-pw" tabindex="-1">👁</button>
+              </div>
+            </div>
+            <div class="forgot"><a>Lupa password?</a></div>
+            <button type="submit" class="btn-primary" id="btn-login">Masuk</button>
+          </form>
+          <p class="auth-switch">Belum punya akun? <a id="link-to-register">Daftar sekarang</a></p>
+        </div>
+
+        <!-- Register Form -->
+        <div id="form-register" style="display:none">
+          <div class="msg msg-err" id="reg-err"></div>
+          <div class="msg msg-ok"  id="reg-ok"></div>
+          <form id="register-form" autocomplete="off">
+            <div class="row2">
+              <div class="field">
+                <label>Nama Lengkap</label>
+                <input type="text" id="reg-name" placeholder="Nama lengkap"/>
+              </div>
+              <div class="field">
+                <label>Username</label>
+                <input type="text" id="reg-username" placeholder="username_unik"/>
+              </div>
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input type="email" id="reg-email" placeholder="email@contoh.com"/>
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label>Password</label>
+                <div class="pw-wrap">
+                  <input type="password" id="reg-password" placeholder="Min. 6 karakter"/>
+                  <button type="button" class="pw-toggle" id="toggle-reg-pw" tabindex="-1">👁</button>
+                </div>
+                <div class="pw-strength"><div class="pw-strength-bar" id="strength-bar"></div></div>
+                <div class="pw-reqs" id="pw-reqs">
+                  <div class="req" id="req-len"><div class="req-dot"></div>Minimal 6 karakter</div>
+                  <div class="req" id="req-num"><div class="req-dot"></div>Mengandung angka</div>
+                  <div class="req" id="req-upper"><div class="req-dot"></div>Huruf kapital</div>
+                </div>
+              </div>
+              <div class="field">
+                <label>Konfirmasi</label>
+                <div class="pw-wrap">
+                  <input type="password" id="reg-confirm" placeholder="Ulangi password"/>
+                  <button type="button" class="pw-toggle" id="toggle-reg-confirm" tabindex="-1">👁</button>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary" id="btn-register">Buat Akun</button>
+          </form>
+          <p class="terms">Dengan mendaftar, kamu menyetujui syarat &amp; ketentuan kami.</p>
+          <p class="auth-switch" style="margin-top:12px">Sudah punya akun? <a id="link-to-login">Masuk di sini</a></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       PAGE: APP (DASHBOARD)
+  ═══════════════════════════════════════ -->
+  <section id="page-app" class="page">
+
+    <!-- Navbar -->
+    <nav>
+      <div class="nav-brand">TaskFlow</div>
+      <div class="nav-right">
+
+        <!-- Notification Bell -->
+        <div id="notif-wrapper">
+          <button class="btn-notif" id="btn-notif" title="Notifikasi deadline">
+            🔔
+            <span id="notif-badge"></span>
+          </button>
+          <div id="notif-panel">
+            <div class="notif-header">Tugas mendesak</div>
+            <div id="notif-list"></div>
+          </div>
+        </div>
+
+        <!-- User Info -->
+        <div class="nav-user-info">
+          <span class="nav-name" id="nav-username"></span>
+          <span class="nav-role">Mahasiswa</span>
+        </div>
+
+        <button class="btn-logout" id="btn-logout">Keluar 🚪</button>
+      </div>
+    </nav>
+
+    <main>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total</div>
+          <div class="stat-num c-green" id="stat-total">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Belum Selesai</div>
+          <div class="stat-num c-warn" id="stat-pending">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Selesai</div>
+          <div class="stat-num c-success" id="stat-done">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Prioritas Tinggi</div>
+          <div class="stat-num c-danger" id="stat-high">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Terlambat</div>
+          <div class="stat-num c-danger" id="stat-overdue">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Mendekati</div>
+          <div class="stat-num c-info" id="stat-soon">0</div>
+        </div>
+      </div>
+
+      <!-- Content Grid -->
+      <div class="content-grid">
+
+        <!-- Sidebar: Add / Edit Form -->
+        <aside id="add-form">
+          <div class="form-title-bar">
+            <span id="form-title">Tambah Tugas Baru</span>
+            <button class="btn-cancel" id="btn-cancel-edit">✕ Batal edit</button>
+          </div>
+          <form id="task-form" autocomplete="off">
+            <div class="field">
+              <label>Nama Tugas</label>
+              <input type="text" id="task-name" placeholder="cth. UTS, Makalah, Presentasi..." required/>
+            </div>
+            <div class="field">
+              <label>Mata Kuliah</label>
+              <input type="text" id="task-subject" placeholder="cth. Kalkulus, Pemrograman Web..." required/>
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label>Prioritas</label>
+                <select id="task-priority">
+                  <option value="high">🔴 Tinggi</option>
+                  <option value="medium" selected>🟡 Sedang</option>
+                  <option value="low">🟢 Rendah</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Deadline</label>
+                <input type="date" id="task-deadline" required/>
+              </div>
+            </div>
+            <div class="field">
+              <label>Catatan (opsional)</label>
+              <textarea id="task-notes" placeholder="Tambahkan catatan atau detail tugas..."></textarea>
+            </div>
+            <button type="submit" class="btn-add-task" id="btn-add-task">+ Tambah Tugas</button>
+          </form>
+        </aside>
+
+        <!-- Main: Task List -->
+        <div class="task-panel">
+          <div class="panel-toolbar">
+            <div class="panel-title">Daftar Tugas</div>
+            <div class="sort-wrap">
+              <span class="sort-label">Urut:</span>
+              <select class="sort-select" id="sort-select">
+                <option value="deadline">📅 Deadline</option>
+                <option value="priority">🔥 Prioritas</option>
+                <option value="newest">🆕 Terbaru</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filter-bar" id="filter-bar">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="pending">Belum Selesai</button>
+            <button class="filter-btn" data-filter="done">Selesai</button>
+            <button class="filter-btn" data-filter="high">Tinggi</button>
+            <button class="filter-btn" data-filter="medium">Sedang</button>
+            <button class="filter-btn" data-filter="low">Rendah</button>
+          </div>
+
+          <div id="task-list">
+            <div class="empty-state">
+              <div class="empty-icon">📋</div>
+              <div class="empty-text">Memuat data...</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /content-grid -->
+    </main>
+  </section><!-- /page-app -->
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
